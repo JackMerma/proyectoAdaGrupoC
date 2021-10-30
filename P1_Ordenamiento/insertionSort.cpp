@@ -10,6 +10,12 @@ using namespace std;
 #define ll long long
 #define endl "\n"
 
+/**
+ * Metodo sort_by_insertion_method: ordena mediante la metodologia insertion
+ * Atributos:
+ * 	arr -> arreglo que se modificara
+ * 	len -> longitud del arreglo
+ */
 template <class X>
 void sort_by_insertion_method(X arr[], int len){
 	for(int k=1;k<len;k++){
@@ -23,25 +29,3 @@ void sort_by_insertion_method(X arr[], int len){
 		arr[j+1]=key;
 	}
 }
-
-int main(){
-	ios_base::sync_with_stdio(0);
-	cin.tie(0);
-
-	int arr1[]={5,1,4,2};
-	string arr2[]={"hola","...","..","alma"};
-
-	sort_by_insertion_method(arr1,4);
-	sort_by_insertion_method(arr2,4);
-
-
-	for(int i=0;i<4;i++)
-		cout<<arr1[i]<<" ";
-	cout<<endl;
-	for(int i=0;i<4;i++)
-		cout<<arr2[i]<<" ";
-	cout<<endl;
-
-	return 0;
-}
-
