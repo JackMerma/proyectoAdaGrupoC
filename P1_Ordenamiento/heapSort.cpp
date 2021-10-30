@@ -10,6 +10,13 @@ using namespace std;
 #define ll long long
 #define endl "\n"
 
+/**
+ * Metodo swap: Cambia dos valores de un arreglo
+ * Atributos:
+ * 	arr -> arreglo de tipo generico
+ * 	a   -> posicion del primer elemento
+ * 	b   -> posicion del segundo elemento
+ */
 template <class X>
 void swap(X arr[], int a, int b){
 	X aux=arr[a];
@@ -17,9 +24,18 @@ void swap(X arr[], int a, int b){
 	arr[b]=aux;
 }
 
+/**
+ * Metodo heapify: Construye un heap recursivamente
+ * Atributos:
+ * 	arr -> arreglo principal
+ * 	idx -> posicion del elemento que se cree el mas grande en 'arr'
+ * 	max -> limite de recorrido en el arreglo
+ */
 template <class X>
 void heapify(X arr[], int idx, int max){
-	int lar=idx,left=2*idx+1,right=2*idx+2;
+	int lar=idx,
+			left=2*idx+1,
+			right=2*idx+2;
 
 	if(left<max&&arr[left]>arr[idx])
 		lar=left;
@@ -31,36 +47,29 @@ void heapify(X arr[], int idx, int max){
 	}
 }
 
+/**
+ * Metodo buildHeap: construye un heap llamando a heapify
+ * Atributos:
+ *  arr -> arreglo que se modificará
+ *  len -> longitud del arreglo
+ */
 template <class X>
 void buildHeap(X arr[], int len){
 	for(int i=len/2-1;i>=0;i--)
 		heapify(arr, i, len);
 }
 
+/**
+ * Metodo sort_by_heap_method: ordena mediante la metodologia heap
+ * Atributos:
+ * 	arr -> arreglo que se modificara
+ * 	len -> longitud del arreglo
+ */
 template <class X>
-void sort(X arr[], int len){
+void sort_by_heap_method(X arr[], int len){
 	buildHeap(arr,len);
 	for(int i=len-1;i>0;i--){
 		swap(arr,0,i);
 		heapify(arr,0,i);
 	}
-}
-int main(){
-	ios_base::sync_with_stdio(0);
-	cin.tie(0);
-
-	int arr1[] = {7,2,3,1,9,3,1,0};
-	string arr2[]={"flipo","hola","jack","b","random","cpp","x","holo"};
-
-	sort(arr1,8);
-	sort(arr2,8);
-
-	for(int i=0;i<8;i++)
-		cout<<arr1[i]<<" ";
-	cout<<endl;
-	for(int i=0;i<8;i++)
-		cout<<arr2[i]<<" ";
-	cout<<endl;
-
-	return 0;
 }
