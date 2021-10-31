@@ -10,6 +10,13 @@ using namespace std;
 #define ll long long
 #define endl "\n"
 
+/**
+ * Metodo swap: intercambia dos datos del arreglo
+ * Atributos:
+ * 	arr  -> arreglo principal
+ * 	posA -> primera posicion a intercambiar
+ * 	posB -> segunda posicion a intercambiar
+ */
 template <class X>
 void swap(X arr[], int posA, int posB){
 	X aux=arr[posA];
@@ -17,6 +24,13 @@ void swap(X arr[], int posA, int posB){
 	arr[posB]=aux;
 }
 
+/**
+ * Metodo sort_quick: Aplica recursivamente el metodo quicksort
+ * Atributos:
+ * 	arr    -> arreglo principal
+ * 	limIzq -> limite a la izquierda para aplicar el metodo
+ * 	limDer -> limite a la derecha para aplicar el metodo
+ */
 template <class X>
 void sort_quick(X arr[], int limIzq, int limDer){
 	X pivot=arr[limIzq];//inicializando el pivot --> primera posicion del sub-arreglo
@@ -45,35 +59,13 @@ void sort_quick(X arr[], int limIzq, int limDer){
 
 }
 
+/**
+ * Metodo sort_by_quick_method: metodo principal de ordenamiento quick
+ * Atributos:
+ * 	arr -> arreglo a modificar
+ * 	len -> longitud del arreglo
+ */
 template <class X>
 void sort_by_quick_method(X arr[], int len){
 	sort_quick(arr,0,len-1);
 } 
-
-int main(){
-	ios_base::sync_with_stdio(0);
-	cin.tie(0);
-
-	int arr1[]={5,1,7,2,9,2,1,4,5};
-	string arr2[]={"hola","hol","a",".","aa","otro"};
-	bool arr3[]={true,false,false,true};
-
-	sort_by_quick_method(arr1,9);
-	sort_by_quick_method(arr2,6);
-	sort_by_quick_method(arr3,4);
-
-	for(int i=0;i<9;i++)
-		cout<<arr1[i]<<" ";
-	cout<<endl;
-
-	for(int i=0;i<6;i++)
-		cout<<arr2[i]<<" ";
-	cout<<endl;
-
-	for(int i=0;i<4;i++)
-		cout<<arr3[i]<<" ";
-	cout<<endl;
-
-	return 0;
-}
-
