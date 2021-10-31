@@ -24,18 +24,43 @@ string toString(T t){
 
 
 template <class X>
-void procesar_algoritmo(X arr,int len){
+float procesar_algoritmo(X arr[], int opt, int len){
+
+	clock_t t;
+
+	t=clock();//INICIO
+
+	if(opt==1){
+		sort_by_quick_method(arr,len);
+	}else if(opt==2){
+		sort_by_heap_method(arr,len);
+	}else{
+		sort_by_insertion_method(arr,len);
+	}
+
+	t=clock()-t;//FIN
+
+	return ((float)t)/CLOCKS_PER_SEC;
+}
+
+template <class X>
+void procesar(X arr,int len){
 	//algoritmo a usar
-	int optAlgo;
+	int opt;
 	printf("Algoritmo de ordenamiento a usar:\n1. Quick Sort\n2. Heap Sort\n3. Insertion Sort\nOpcion:");
-	scanf("%i",&optAlgo);
+	scanf("%i",&opt);
+
+	//manejo del tiempo de ejecusion
+	if(opt<1||opt>3){
+		opt=1;//quicksort por defecto
+		printf("Quick Sort por defecto\n");
+	}
+
+	float time=procesar_algoritmo(arr,opt,len);
 
 
-
-	sort_by_quick_method(arr,len);
-
-
-	//prueba
+	//mostrando datos ordenados y tiempo de ejecucion
+	printf("Datos: ");
 	for(int i=0;i<len;i++){
 		if(typeid(arr[0])==typeid(string)){//imprimir cadenas
 			char buffer[100];
@@ -45,12 +70,7 @@ void procesar_algoritmo(X arr,int len){
 			printf("%i ",arr[i]);
 		}
 	}
-
-	//algoritmos
-
-
-	//Tiempo - salida
-
+	printf("\nTiempo tomado: %f segundos.\n",time);
 }
 
 void opcion_1(){
@@ -75,7 +95,7 @@ void opcion_1(){
 		for(int i=0;i<n;i++)
 			cin>>arr[i];
 
-		procesar_algoritmo(arr,n);
+		procesar(arr,n);
 
 
 
@@ -86,7 +106,7 @@ void opcion_1(){
 		for(int i=0;i<n;i++)
 			cin>>arr[i];
 
-		procesar_algoritmo(arr,n);
+		procesar(arr,n);
 	}
 }
 void opcion_2(){
@@ -112,7 +132,7 @@ void opcion_2(){
 	for(int i=0;i<n;i++)
 		arr[i]=rand()%(b-a+1)+a;
 
-	procesar_algoritmo(arr,n);
+	procesar(arr,n);
 
 }
 
