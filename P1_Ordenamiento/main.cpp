@@ -13,8 +13,46 @@ using namespace std;
 #define ll long long
 #define endl "\n"
 
+//	Prototipos
+template <typename T> string toString(T);
+template <class X> float procesar_algoritmo(X*,int,int);
+template <class X> void procesar(X*,int);
+void opcion_1();
+void opcion_2();
 
-//template para convertir un dato generico a string
+//	Metodo principal
+int main(){
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+
+	int opt=-1;
+
+	while(opt!=3){
+		printf("******** Menu ********\n1. Ingresar datos\n2. Generar datos\n3. Salir\n");
+		printf("Opcion:");scanf("%i",&opt);
+		if(opt==1){
+			opcion_1();
+		}else if(opt==2){
+			opcion_2();
+		}else if(opt==3){
+			printf("Finalizando...\n");
+		}else{
+			printf("Intente de nuevo\n");
+		}
+	}
+	return 0;
+}
+
+
+/**
+ * Metodos ...
+ */
+
+/**
+ * Metodo toString: Convierte un dato de tipo generico a string
+ * Atributos:
+ * 	t -> dato de tipo generico
+ */
 template<typename T>
 string toString(T t){
 	stringstream s;
@@ -22,7 +60,13 @@ string toString(T t){
 	return s.str();
 }
 
-
+/**
+ * Metodo procesr_algoritmo: Procesa uno de los 3 algoritmos de ordenamiento y captura el tiempo
+ * Atributos: 
+ * 	arr -> arreglo principal (datos genericos)
+ * 	opt -> opcion de algoritmo
+ * 	len -> longitud del arreglo
+ */
 template <class X>
 float procesar_algoritmo(X arr[], int opt, int len){
 
@@ -43,8 +87,15 @@ float procesar_algoritmo(X arr[], int opt, int len){
 	return ((float)t)/CLOCKS_PER_SEC;
 }
 
+/**
+ * Metodo procesar: Muestra un menu de opciones y luego de llamar a procesar_algoritmo
+ * 									muestra los datos ordenados y el tiempo tomado
+ * Atributos:
+ * 	arr -> arreglo principal
+ * 	len -> longitud del arreglo
+ */
 template <class X>
-void procesar(X arr,int len){
+void procesar(X arr[],int len){
 	//algoritmo a usar
 	int opt;
 	printf("Algoritmo de ordenamiento a usar:\n1. Quick Sort\n2. Heap Sort\n3. Insertion Sort\nOpcion:");
@@ -73,6 +124,9 @@ void procesar(X arr,int len){
 	printf("\nTiempo tomado: %f segundos.\n",time);
 }
 
+/**
+ * Metodo opcion_1: muestra el contenido de la opcion por ingreso de datos, luego llama a procesar
+ */
 void opcion_1(){
 	int n;
 	printf("Cantidad de datos:");
@@ -98,7 +152,6 @@ void opcion_1(){
 		procesar(arr,n);
 
 
-
 	}else{																	//Numeros
 		int arr[n];
 		printf("Ingrese los datos separados por espacios:");
@@ -109,6 +162,10 @@ void opcion_1(){
 		procesar(arr,n);
 	}
 }
+
+/**
+ * Metodo opcion_2: muestra el contenido de la opcion por generador de datos, luego llama a procesar
+ */
 void opcion_2(){
 	int n;
 	//los datos se generan aleatoriamente
@@ -135,26 +192,3 @@ void opcion_2(){
 	procesar(arr,n);
 
 }
-
-int main(){
-	ios_base::sync_with_stdio(0);
-	cin.tie(0);
-
-	int opt=-1;
-
-	while(opt!=3){
-		printf("******** Menu ********\n1. Ingresar datos\n2. Generar datos\n3. Salir\n");
-		printf("Opcion:");scanf("%i",&opt);
-		if(opt==1){
-			opcion_1();
-		}else if(opt==2){
-			opcion_2();
-		}else if(opt==3){
-			printf("Finalizando...\n");
-		}else{
-			printf("Intente de nuevo\n");
-		}
-	}
-	return 0;
-}
-
