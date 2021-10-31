@@ -13,6 +13,16 @@ using namespace std;
 #define ll long long
 #define endl "\n"
 
+
+//template para convertir un dato generico a string
+template<typename T>
+string toString(T t){
+	stringstream s;
+	s<<t;
+	return s.str();
+}
+
+
 template <class X>
 void procesar_algoritmo(X arr,int len){
 	//algoritmo a usar
@@ -21,14 +31,23 @@ void procesar_algoritmo(X arr,int len){
 	scanf("%i",&optAlgo);
 
 
+
+	sort_by_quick_method(arr,len);
+
+
 	//prueba
-	for(int i=0;i<len;i++)
-		printf("%i ",arr[i]);
+	for(int i=0;i<len;i++){
+		if(typeid(arr[0])==typeid(string)){//imprimir cadenas
+			char buffer[100];
+			char* data = strcpy(buffer,toString(arr[i]).c_str());//convertir el string a char
+			printf("%s ",data);
+		}else{//imprimir numeros
+			printf("%i ",arr[i]);
+		}
+	}
 
 	//algoritmos
 
-
-	printf("Funciona\n");
 
 	//Tiempo - salida
 
@@ -54,7 +73,7 @@ void opcion_1(){
 		printf("Ingrese los datos separados por espacios:");
 
 		for(int i=0;i<n;i++)
-			scanf("%s",&arr[i]);
+			cin>>arr[i];
 
 		procesar_algoritmo(arr,n);
 
@@ -62,10 +81,10 @@ void opcion_1(){
 
 	}else{																	//Numeros
 		int arr[n];
-		printf("Ingrese los datos separados por espacios:\n");
+		printf("Ingrese los datos separados por espacios:");
 
 		for(int i=0;i<n;i++)
-			scanf("%i",&arr[i]);
+			cin>>arr[i];
 
 		procesar_algoritmo(arr,n);
 	}
