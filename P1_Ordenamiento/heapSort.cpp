@@ -11,14 +11,14 @@ using namespace std;
 #define endl "\n"
 
 /**
- * Metodo swap: Cambia dos valores de un arreglo
+ * Metodo swap_heap: Cambia dos valores de un arreglo
  * Atributos:
  * 	arr -> arreglo de tipo generico
  * 	a   -> posicion del primer elemento
  * 	b   -> posicion del segundo elemento
  */
 template <class X>
-void swap(X arr[], int a, int b){
+void swap_heap(X arr[], int a, int b){
 	X aux=arr[a];
 	arr[a]=arr[b];
 	arr[b]=aux;
@@ -42,7 +42,7 @@ void heapify(X arr[], int idx, int max){
 	if(right<max&&arr[right]>arr[lar])
 		lar=right;
 	if(lar!=idx){
-		swap(arr,idx,lar);
+		swap_heap(arr,idx,lar);
 		heapify(arr,lar,max);
 	}
 }
@@ -69,7 +69,7 @@ template <class X>
 void sort_by_heap_method(X arr[], int len){
 	buildHeap(arr,len);
 	for(int i=len-1;i>0;i--){
-		swap(arr,0,i);
+		swap_heap(arr,0,i);
 		heapify(arr,0,i);
 	}
 }

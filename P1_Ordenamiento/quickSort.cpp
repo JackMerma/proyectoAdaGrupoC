@@ -11,14 +11,14 @@ using namespace std;
 #define endl "\n"
 
 /**
- * Metodo swap: intercambia dos datos del arreglo
+ * Metodo swap_quick: intercambia dos datos del arreglo
  * Atributos:
  * 	arr  -> arreglo principal
  * 	posA -> primera posicion a intercambiar
  * 	posB -> segunda posicion a intercambiar
  */
 template <class X>
-void swap(X arr[], int posA, int posB){
+void swap_quick(X arr[], int posA, int posB){
 	X aux=arr[posA];
 	arr[posA]=arr[posB];
 	arr[posB]=aux;
@@ -42,7 +42,7 @@ void sort_quick(X arr[], int limIzq, int limDer){
 		while(arr[b]>pivot) b--;
 
 		//intercambia datos en el proceso
-		if(a<b) swap(arr,a,b);
+		if(a<b) swap_quick(arr,a,b);
 	}
 
 	//pivote en su posicion correcta
