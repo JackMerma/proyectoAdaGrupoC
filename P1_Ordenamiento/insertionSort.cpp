@@ -14,12 +14,13 @@ using namespace std;
  * Metodo sort_by_insertion_method: ordena mediante la metodologia insertion
  * Atributos:
  * 	arr -> arreglo que se modificara
- * 	len -> longitud del arreglo
+ * 	ini -> posicion donde empieza el ordenamiento
+ * 	fin -> posicion donde termina el ordenamiento
  */
-template <class X>
-void sort_by_insertion_method(X arr[], int len){
-	for(int k=1;k<len;k++){
-		X key=arr[k];
+template <class x>
+void sort_by_insertion_method(x arr[], int ini, int fin){
+	for(int k=ini+1;k<fin+1;k++){
+		x key=arr[k];
 		int j=k-1;
 
 		while(j>=0&&arr[j]>key){
