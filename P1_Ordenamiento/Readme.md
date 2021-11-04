@@ -18,7 +18,7 @@ g++ -o programa.exe main.cpp && programa
 ```
 
 ## Descripción
-Al ejecutar este recurso, notará que se muestra un menú simple, donde usted podrá elegir entre ingresar los datos o generarlos aleatoriamente.Si elige ingresarlos, usted podrá ingresar números o palabras, pero si desea generarlos solo se podrán generar números. Finalmente, en cualquiera de los dos casos, se le pedirá escoger uno de los tres algoritmos de ordenamiento:
+Al ejecutar este recurso, notará que se muestra un menú simple, donde usted podrá elegir entre ingresar los datos o generarlos aleatoriamente. Si elige ingresarlos, usted podrá ingresar números o palabras, pero si desea generarlos solo se podrán generar números. Finalmente, en cualquiera de los dos casos, el programa calculará el tiempo que demoró en ordenar los datos con los 3 tipos de ordenamientos:
 + Quick Sort
 + Heap Sort
 + Insertion Sort
@@ -30,7 +30,7 @@ Para ingresar datos, deberá entrar la cantidad de datos a ingresar y luego, el 
 En la generación de datos se le pedirá la cantidad de datos **n** y el rango de estos, separados por espacios (incluye al mínimo y máximo de este rango)
 
 ### Salida
-En la salida de datos, se le presentará los **n** datos ordenados separados por espacios y en la última línea se imprimirá el tiempo de ejecución que tardó dicho algoritmo (en segundos).
+En la salida de datos, se le presentará los **n** datos ordenados separados por espacios y en la última línea se imprimirá el tiempo de ejecución que tardó los 3 algoritmos (en segundos).
 
 ## Análisis de algoritmos
 
@@ -52,15 +52,23 @@ Este ordenamiento hace uso de un **heap** para poder encontrar al mayor dentro d
 
 La particularidad está en el uso del heap, ya que para construir uno, el coste demanda en general O(log2(n)), esto ya que pasa solo por 'nodos' padres que se encuentran en una distribución de árbol binario, lo que se interpreta como un coste de logaritmo en base 2 de **n**; finalmente luego de construir el heap, intercambia posiciones con el n-1,n-2,n-3, ... 1 posiciones, lo que lo hace este coste exterior de O(n), entonces en general, el coste total habrá sido de O(n\*log2(n)). En el mejor caso, la construcción del algoritmo para desarrollar el heap, no se puede obviar (pasa por log2(n) posiciones), es por ello que incluso en este, el coste sigue siendo O(n\*log2(n)).
 
-### Quick Sort
+### Quick Sort (optimizado)
 ![quick sort gif](https://github.com/JackMerma/proyectoAdaGrupoC/blob/main/P1_Ordenamiento/img/quick.gif)
 
-Este algoritmo de ordenamiento se base en la idea de dividir y conquistar. Esencialmente, se sostiene en la idea de elegir a un **pivot** (normalmente el primer elemento del problema X) para luego ordenar los demás datos de la forma en que se encuentren a la izquierda los que son menores y a la derecha los mayores (orden de menor a mayor), y hasta que encuentre la posición correcta para este pivot, se podrán intercambiar los elementos de izquierda y de derecha en caso no cumplan esta idea.
+Este algoritmo de ordenamiento se basa en la idea de dividir y conquistar. Esencialmente, se sostiene en la idea de elegir a un **pivot** (normalmente el primer elemento del problema X) para luego ordenar los demás datos de la forma en que se encuentren a la izquierda los que son menores y a la derecha los mayores (orden de menor a mayor), y hasta que encuentre la posición correcta para este pivot, se podrán intercambiar los elementos de izquierda y de derecha en caso no cumplan esta idea.
 
-Entonces, el mejor caso estaría cuando el **pivot** consigue una posición en la mitad de los datos en el problema X, para cuando se haya ordenado, entonces el pivot ocupara el lugar correspondiente (pivot ordenado), y el problema se subdivida en 2 subproblemas que al igual que este, cada uno tendrá un **pivot** y desarrollará el mismo procedimiento; esto entonces hace validad un coste de O(n\*log2(n)) siempre y cuando los casos se subdividan en 2 partes o el pivot siempre ocupe la posición media de cada subproblema. Se detalla en la siguiente figura el mejor caso:
+Entonces, el mejor caso estaría cuando el **pivot** consigue una posición en la mitad de los datos en el problema X, para cuando se haya ordenado, entonces el pivot ocupara el lugar correspondiente (pivot ordenado), y el problema se subdivida en 2 subproblemas que al igual que este, cada uno tendrá un **pivot** y desarrollará el mismo procedimiento; esto entonces genera un coste de O(n\*log2(n)) siempre y cuando los casos se subdividan en 2 partes o el pivot siempre ocupe la posición media de cada subproblema. Se detalla en la siguiente figura el mejor caso:
 
 ![quick general partition](https://github.com/JackMerma/proyectoAdaGrupoC/blob/main/P1_Ordenamiento/img/quick.png)
 
 Básicamente, se observa que los problemas se subdividen en la mitad (caso esencial); entonces habrá **c** divisiones, lo cual en general, lo hace en un coste de O(log2(n)) y multiplicada por los datos que recorre, se convierte en una complejidad de O(n\*log2(n)).
 
 En el peor caso, se tiene a un arreglo ordenado de forma ascendente o descendente, esto ya que el **pivot**, siempre estará en la posición 1 o en la n-ésima, entonces el problema se subdivida en 2 particiones de 0 y n-1, deduciendo que si esto se repite en las siguientes sub-particiones, tendrá que partir n veces el problema y por la cantidad de datos que recorre (n-1), en general lo hace tener un coste de O(n^2); sin embargo, la probabilidad de que este ordenado ascendentemente o viceversa es de 2/n!, es por ello que se toma como uno de los ordenamientos más efectivos.
+
+#### Quick Sort Hibrido
+
+Lo dicho anteriormente, se implementa perfectamente en un Quick Sort, sin embargo hay una forma de optimizar este proceso aún mas. Como se sabe un método por Insercion, implica generar menos comparaciones para casos pequeños, por lo cual esta metodología se implementó mediante la restriccion de uso de un **THRESHOLD** (umbral), que basicamente indica la maxima cantidad a la que pueden llegar las subdivisiones para desde ese punto poder usar el algoritmo de Insertion Sort y no la de Quick Sort, por ejemplo, en esta implementación se define al **umbral** como una constante que vale **11**, esto ya que se desea que si la longitud de los subarreglos generados en las subdivision llega a ser menor que **11**, entonces se ordenen estos elementos mediante Insercion.
+
+## Bibliografía
++ [Hybrid Quicksort: An empirical Study](https://journal.binus.ac.id/index.php/commit/article/view/582/560)
++ [Advanced Quick Sort (Hybrid Algorithm)](https://www.geeksforgeeks.org/advanced-quick-sort-hybrid-algorithm/)
