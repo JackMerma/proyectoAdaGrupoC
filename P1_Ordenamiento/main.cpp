@@ -6,8 +6,7 @@
  */
 #include <bits/stdc++.h>
 #include "heapSort.cpp"
-#include "insertionSort.cpp"
-#include "quickSort.cpp"
+#include "quickSort.cpp"//implementa el metodo por insercion
 using namespace std;
 
 #define ll long long
@@ -79,7 +78,7 @@ float procesar_algoritmo(X arr[], int opt, int len){
 	}else if(opt==2){
 		sort_by_heap_method(arr,len);
 	}else{
-		sort_by_insertion_method(arr,len);
+		sort_by_insertion_method(arr,0,len-1);
 	}
 
 	t=clock()-t;//FIN
@@ -96,32 +95,28 @@ float procesar_algoritmo(X arr[], int opt, int len){
  */
 template <class X>
 void procesar(X arr[],int len){
-	//algoritmo a usar
-	int opt;
-	printf("Algoritmo de ordenamiento a usar:\n1. Quick Sort\n2. Heap Sort\n3. Insertion Sort\nOpcion:");
-	scanf("%i",&opt);
 
-	//manejo del tiempo de ejecusion
-	if(opt<1||opt>3){
-		opt=1;//quicksort por defecto
-		printf("Quick Sort por defecto\n");
-	}
+	//2 copias del arreglo
 
-	float time=procesar_algoritmo(arr,opt,len);
+	X arr2[len]; copy(arr,arr+len,arr2);
+	X arr3[len]; copy(arr,arr+len,arr3);
+
+	float time_quick_sort=procesar_algoritmo(arr,1,len);
+	float time_heap_sort=procesar_algoritmo(arr2,2,len);
+	float time_insertion_sort=procesar_algoritmo(arr3,3,len);
 
 
 	//mostrando datos ordenados y tiempo de ejecucion
 	printf("Datos: ");
 	for(int i=0;i<len;i++){
-		if(typeid(arr[0])==typeid(string)){//imprimir cadenas
-			char buffer[100];
-			char* data = strcpy(buffer,toString(arr[i]).c_str());//convertir el string a char
-			printf("%s ",data);
-		}else{//imprimir numeros
-			printf("%i ",arr[i]);
-		}
+		char buffer[100];
+		char* data = strcpy(buffer,toString(arr[i]).c_str());//convertir el string a char
+		printf("%s ",data);
 	}
-	printf("\nTiempo tomado: %f segundos.\n",time);
+	printf("\n\nTiempo tomado");
+	printf("\n(Quick Sort): %f segundos.",time_quick_sort);
+	printf("\n(Heap Sort): %f segundos.",time_heap_sort);
+	printf("\n(Insertion Sort): %f segundos.\n\n",time_insertion_sort);
 }
 
 /**
@@ -174,17 +169,18 @@ void opcion_2(){
 	scanf("%i",&n);
 	n=abs(n);//si se ingresa un negativo
 
-	ll arr[n]={0};
+	int arr[n]={0};
 
-	ll a=1,b=0;
+	int a=1,b=0;
 	printf("Rangos(separada por espacios):");
 	scanf("%i %i", &a,&b);
 
 	//para datos invalidos
-	ll minX=min(a,b),maxX=max(a,b);
+	int minX=min(a,b),maxX=max(a,b);
 	a=minX;
 	b=maxX;
 
+	printf("\nGenerando datos ...\n");
 	//generacion de 'n' datos aleatorios en el rango [a-b]
 	for(int i=0;i<n;i++)
 		arr[i]=rand()%(b-a+1)+a;
