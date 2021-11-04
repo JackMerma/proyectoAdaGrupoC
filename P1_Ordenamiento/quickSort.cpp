@@ -2,27 +2,15 @@
  * @author      : Jackson Fernando Merma Portocarrero (jmermap@unsa.edu.pe)
  * @created     : 30/10/2021
  * @filename    : quickSort
- * @description : Ordenamiento Quicksort
+ * @description : Ordenamiento Quicksort con el uso de insertion sort
  */
 #include <bits/stdc++.h>
+#include "insertionSort.cpp"
 using namespace std;
 
 #define ll long long
 #define endl "\n"
-
-/**
- * Metodo swap_quick: intercambia dos datos del arreglo
- * Atributos:
- * 	arr  -> arreglo principal
- * 	posA -> primera posicion a intercambiar
- * 	posB -> segunda posicion a intercambiar
- */
-template <class X>
-void swap_quick(X arr[], int posA, int posB){
-	X aux=arr[posA];
-	arr[posA]=arr[posB];
-	arr[posB]=aux;
-}
+const int THRESHOLD = 11; //se define el umbral
 
 /**
  * Metodo sort_quick: Aplica recursivamente el metodo quicksort
@@ -33,30 +21,38 @@ void swap_quick(X arr[], int posA, int posB){
  */
 template <class X>
 void sort_quick(X arr[], int limIzq, int limDer){
-	X pivot=arr[limIzq];//inicializando el pivot --> primera posicion del sub-arreglo
-	int a=limIzq,b=limDer;//limites de recorrido
 
-	while(a<b){
-		//buscando la posicion correcta para el pivot
-		while(arr[a]<=pivot&&a<b) a++;
-		while(arr[b]>pivot) b--;
+	while(limIzq<limDer){
 
-		//intercambia datos en el proceso
-		if(a<b) swap_quick(arr,a,b);
+		if(limDer-limIzq+1<THRESHOLD){//cantidad de datos menores a 10 -> insertion sort
+			sort_by_insertion_method(arr,limIzq,limDer);
+			break;
+
+
+		}else{//quick sort
+			//algoritmo de quicksort
+			X pivot=arr[limDer];
+			int a=limIzq,b=limIzq;//b almacenará la posicion correcta del pivot
+
+			for(;a<limDer;a++){
+				if(arr[a]<pivot){
+					swap(arr[a],arr[b]);
+					b++;
+				}
+			}
+
+			swap(arr[b],arr[limDer]);
+
+			//Recursividad rapida
+			if(b-limIzq<limDer-b){//sort por la izquierda
+				sort_quick(arr,limIzq,b-1);
+				limIzq=b+1;
+			}else{
+				sort_quick(arr,b+1,limDer);//sort por la derecha
+				limDer=b-1;
+			}
+		}
 	}
-
-	//pivote en su posicion correcta
-	arr[limIzq]=arr[b];
-	arr[b]=pivot;
-
-	//recursividad subdivisionanda
-
-	if(limIzq<b-1)//si hay elementos por la izquierda
-		sort_quick(arr,limIzq,b-1);
-
-	if(b+1<limDer)//si hay elementos por la derecha
-		sort_quick(arr,b+1,limDer);
-
 }
 
 /**

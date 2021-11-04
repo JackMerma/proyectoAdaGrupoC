@@ -17,10 +17,10 @@ using namespace std;
  * 	ini -> posicion donde empieza el ordenamiento
  * 	fin -> posicion donde termina el ordenamiento
  */
-template <class x>
-void sort_by_insertion_method(x arr[], int ini, int fin){
+template <class X>
+void sort_by_insertion_method(X arr[], int ini, int fin){
 	for(int k=ini+1;k<fin+1;k++){
-		x key=arr[k];
+		X key=arr[k];
 		int j=k-1;
 
 		while(j>=0&&arr[j]>key){
