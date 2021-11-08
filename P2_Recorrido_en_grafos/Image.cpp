@@ -23,6 +23,11 @@ class Image{
 		int channels;
 		unsigned char *image=NULL;
 
+		/**
+		 * Metodo read: Lee una imagen RGB
+		 * Atributos:
+		 * 	*path -> path para encontrar al archivo
+		 */
 		void read(char *path){
 			image=stbi_load(path, &width, &height, &channels, 0);
 			if(image==NULL){
@@ -32,6 +37,13 @@ class Image{
 			//stbi_image_free(image);
 			//free(image)
 		}
+
+		/**
+		 * Metodo write: Escribe sobre un archivo nuevo
+		 * Atributos:
+		 * 	*type -> tipo de extension de la imagen
+		 * 	*name -> nombre de la imagen
+		 */
 		void write(char* type, char* name){
 			//transformando todo el nombre del nuevo archivo
 			char complete_name[100];
@@ -51,6 +63,9 @@ class Image{
 			}
 		}
 
+		/**
+		 * Metodo convert_to_gray: Convierte una imagen a escala de grises
+		 */
 		void convert_to_gray(){
 			size_t img_size=width*height*channels;
 			int gray_channels=channels==4?2:1;
@@ -74,27 +89,15 @@ class Image{
 			this->channels=gray_channels;
 			this->image=gray_img;
 		}
+
+		/**
+		 * Metodo to_string: retorna informacion de la imagen en forma de cadena
+		 * Atributos:
+		 * 	img -> Imagen de donde se saca la informacion
+		 */
 		friend string to_string(Image const& img){
 			return "width:"+to_string(img.width)+
 				"\nheight:"+to_string(img.height)+
 				"\nchannels:"+to_string(img.channels)+"\n";
 		}
 };
-
-int main(){
-	ios_base::sync_with_stdio(0);
-	cin.tie(0);
-
-	Image myImage;
-	myImage.read("img.jpg");
-	myImage.convert_to_gray();
-	myImage.write("png","otro");
-
-	cout<<to_string(myImage)<<endl;
-	cout<<"informacion"<<endl;
-	for(int i=0;i<1080*1080;i++)
-		cout<<(int)myImage.image[i];
-	cout<<endl;
-
-	return 0;
-}
