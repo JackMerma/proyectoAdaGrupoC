@@ -30,8 +30,27 @@ class Image{
 				exit(1);
 			}
 			//stbi_image_free(image);
+			//free(image)
 		}
-		void write(){}
+		void write(char* type, char* name){
+			//transformando todo el nombre del nuevo archivo
+			char complete_name[100];
+			strcpy(complete_name,name);
+			strcat(complete_name,".");
+			strcat(complete_name,type);
+
+			//procedimiento
+			string option=string(type);
+			if(option=="png"){
+				stbi_write_png(complete_name,width,height,channels,image,width*channels);
+			}else if(option=="jpg"){
+				stbi_write_jpg(complete_name,width,height,channels,image,100);
+			}else{
+				//por defecto
+				write("jpg",name);
+			}
+		}
+
 		void convert_to_gray(){
 			size_t img_size=width*height*channels;
 			int gray_channels=channels==4?2:1;
@@ -69,8 +88,13 @@ int main(){
 	Image myImage;
 	myImage.read("img.jpg");
 	myImage.convert_to_gray();
+	myImage.write("png","otro");
+
 	cout<<to_string(myImage)<<endl;
+	cout<<"informacion"<<endl;
+	for(int i=0;i<1080*1080;i++)
+		cout<<(int)myImage.image[i];
+	cout<<endl;
 
 	return 0;
 }
-
