@@ -21,7 +21,8 @@ class Image{
 		int height;
 		int width;
 		int channels;
-		unsigned char data[2000][2000]; //en forma de matriz y en escala gris
+		vector<vector<unsigned char>> data_image;
+		//unsigned char data_image[2000][2000]; //en forma de matriz y en escala gris
 		unsigned char *image=NULL; //en forma lineal y en escala RGB
 
 		void read(char *path){
@@ -65,17 +66,6 @@ class Image{
 			}
 		}
 
-		friend string to_string(Image const& img){
-			/**
-			 * Metodo to_string: retorna informacion de la imagen en forma de cadena
-			 * Atributos:
-			 * 	img -> Imagen de donde se saca la informacion
-			 */
-			return "width:"+to_string(img.width)+
-				"\nheight:"+to_string(img.height)+
-				"\nchannels:"+to_string(img.channels)+"\n";
-		}
-
 		void convert_to_gray(){
 			/**
 			 * Metodo convert_to_gray: Convierte una imagen a escala de grises
@@ -107,9 +97,60 @@ class Image{
 			/**
 			 * Metodo covert_to_matrix: coloca los datos lineales en una matriz de height*width
 			 */
-			for(int i=0;i<height*width;i++)
-				data[(int)(i/width)][i%width]=image[i];
+			
+			vector<unsigned char> aux;
+			int fil=0,col=0;
+			for(int i=0;i<height*width;i++,col++){
+				if(i%width==0 && i!= 0)
+					data_image.push_back(aux);
+
+
+				if((int)(i/width)==0){
+					aux.push_back(image[i]);
+				}else{
+					aux[i%width]=image[i];
+				}
+			}
+			data_image.push_back(aux);
+
+			//for(int i=0;i<height*width;i++)
+			//	data_image[(int)(i/width)][i%width]=image[i];
 			//la fila se determina con i/width
 			//la columna se determina con i%width
 		}
+
+		friend string to_string(Image const& img){
+			/**
+			 * Metodo to_string: retorna informacion de la imagen en forma de cadena
+			 * Atributos:
+			 * 	img -> Imagen de donde se saca la informacion
+			 */
+			return "width:"+to_string(img.width)+
+				"\nheight:"+to_string(img.height)+
+				"\nchannels:"+to_string(img.channels)+"\n";
+		}
 };
+int main(){
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+
+	cout<<"hola"<<endl;
+	Image myImage;
+	myImage.read("other.jpg");
+	myImage.convert_to_gray();
+	myImage.convert_to_matrix();
+
+	cout<<to_string(myImage)<<endl;
+
+	for(int i=0;i<myImage.height;i++){
+		for(int u=0;u<myImage.width;u++){
+			if((int)myImage.data_image[i][u]==0) cout<<"*";
+			else if((int)myImage.data_image[i][u]==255) cout<<"$";
+			else cout<<"O";
+		}
+		cout<<endl;
+	}
+
+	cout<<endl;
+	return 0;
+}
