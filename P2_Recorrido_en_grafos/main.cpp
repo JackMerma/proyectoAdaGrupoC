@@ -15,19 +15,17 @@ int main(){
 	ios_base::sync_with_stdio(0);
 	cin.tie(0);
 
-	cout<<"hola"<<endl;
-	Image img;
-	img.read("sdasdsd.jpg");
-	img.convert_to_gray();
-	img.convert_to_matrix();
+	Image myImage;
+	cout<<"informacion ... "<<endl;
+	myImage.read("other.jpg");
 
-	cout<<to_string(img)<<endl;
+	cout<<to_string(myImage)<<endl;
 
-	for(int i=0;i<img.height;i++){
-		for(int u=0;u<img.width;u++){
-			if((int)img.data[i][u]==0) cout<<"*";
-			else if((int)img.data[i][u]==255) cout<<"$";
-			else cout<<"O";
+	for(int i=0;i<myImage.height;i++){
+		for(int u=0;u<myImage.width;u++){
+			if((int)myImage.data[i][u]==0) cout<<"#";
+			else if((int)myImage.data[i][u]==255) cout<<" "; 
+			else cout<<"*";
 		}
 		cout<<endl;
 	}
@@ -35,4 +33,3 @@ int main(){
 	cout<<endl;
 	return 0;
 }
-
