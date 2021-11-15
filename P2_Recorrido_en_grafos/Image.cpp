@@ -21,14 +21,15 @@ class Image{
 		int height;
 		int width;
 		int channels;
-		unsigned char *image=NULL;
+		unsigned char data[2000][2000]; //en forma de matriz y en escala gris
+		unsigned char *image=NULL; //en forma lineal y en escala RGB
 
-		/**
-		 * Metodo read: Lee una imagen RGB
-		 * Atributos:
-		 * 	*path -> path para encontrar al archivo
-		 */
 		void read(char *path){
+			/**
+			 * Metodo read: Lee una imagen RGB
+			 * Atributos:
+			 * 	*path -> path para encontrar al archivo
+			 */
 			image=stbi_load(path, &width, &height, &channels, 0);
 			if(image==NULL){
 				cout<<"Error al cargar la imagen"<<endl;
@@ -38,13 +39,14 @@ class Image{
 			//free(image)
 		}
 
-		/**
-		 * Metodo write: Escribe sobre un archivo nuevo
-		 * Atributos:
-		 * 	*type -> tipo de extension de la imagen
-		 * 	*name -> nombre de la imagen
-		 */
 		void write(char* type, char* name){
+			/**
+			 * Metodo write: Escribe sobre un archivo nuevo
+			 * Atributos:
+			 * 	*type -> tipo de extension de la imagen
+			 * 	*name -> nombre de la imagen
+			 */
+
 			//transformando todo el nombre del nuevo archivo
 			char complete_name[100];
 			strcpy(complete_name,name);
@@ -63,14 +65,25 @@ class Image{
 			}
 		}
 
-		/**
-		 * Metodo convert_to_gray: Convierte una imagen a escala de grises
-		 */
+		friend string to_string(Image const& img){
+			/**
+			 * Metodo to_string: retorna informacion de la imagen en forma de cadena
+			 * Atributos:
+			 * 	img -> Imagen de donde se saca la informacion
+			 */
+			return "width:"+to_string(img.width)+
+				"\nheight:"+to_string(img.height)+
+				"\nchannels:"+to_string(img.channels)+"\n";
+		}
+
 		void convert_to_gray(){
+			/**
+			 * Metodo convert_to_gray: Convierte una imagen a escala de grises
+			 */
 			size_t img_size=width*height*channels;
 			int gray_channels=channels==4?2:1;
 			size_t gray_img_size=width*height*gray_channels;
-			
+
 			//localizar memoria para la imagen de grises
 			unsigned char *gray_img=(unsigned char*)malloc(gray_img_size);
 
@@ -90,14 +103,13 @@ class Image{
 			this->image=gray_img;
 		}
 
-		/**
-		 * Metodo to_string: retorna informacion de la imagen en forma de cadena
-		 * Atributos:
-		 * 	img -> Imagen de donde se saca la informacion
-		 */
-		friend string to_string(Image const& img){
-			return "width:"+to_string(img.width)+
-				"\nheight:"+to_string(img.height)+
-				"\nchannels:"+to_string(img.channels)+"\n";
+		void convert_to_matrix(){
+			/**
+			 * Metodo covert_to_matrix: coloca los datos lineales en una matriz de height*width
+			 */
+			for(int i=0;i<height*width;i++)
+				data[(int)(i/width)][i%width]=image[i];
+			//la fila se determina con i/width
+			//la columna se determina con i%width
 		}
 };
