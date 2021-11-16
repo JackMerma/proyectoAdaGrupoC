@@ -17,13 +17,11 @@ using namespace std;
 #include "stb_files/stb_image_write.h"
 
 class Image{
-	private:
-		unsigned char *image=NULL; //en forma lineal y en escala RGB
 	public:
 		int height;
 		int width;
 		int channels;
-		vector<vector<unsigned char>> data;
+		unsigned char *image=NULL; //en forma lineal y en escala RGB
 
 		void read(char *path){
 			/**
@@ -36,9 +34,9 @@ class Image{
 				cout<<"Error al cargar la imagen"<<endl;
 				exit(1);
 			}
-			//stbi_image_free(image);
-			//free(image)
 			
+			//read() ya convierte a scala de gris
+
 			//llamado a la funcion para convertir a escala de grises los datos
 			convert_to_gray();
 		}
@@ -69,18 +67,6 @@ class Image{
 			}
 		}
 
-		friend string to_string(Image const& img){
-			/**
-			 * Metodo to_string: retorna informacion de la imagen en forma de cadena
-			 * Atributos:
-			 * 	img -> Imagen de donde se saca la informacion
-			 */
-			return "width:"+to_string(img.width)+
-				"\nheight:"+to_string(img.height)+
-				"\nchannels:"+to_string(img.channels)+"\n";
-		}
-
-	private:
 		void convert_to_gray(){
 			/**
 			 * Metodo convert_to_gray: Convierte una imagen a escala de grises
@@ -106,28 +92,16 @@ class Image{
 
 			this->channels=gray_channels;
 			this->image=gray_img;
-
-			// llamado a la funcion para crear la matriz
-			convert_to_matrix();
 		}
 
-		void convert_to_matrix(){
+		friend string to_string(Image const& img){
 			/**
-			 * Metodo covert_to_matrix: coloca los datos lineales en una matriz de height*width
+			 * Metodo to_string: retorna informacion de la imagen en forma de cadena
+			 * Atributos:
+			 * 	img -> Imagen de donde se saca la informacion
 			 */
-			
-			vector<unsigned char> aux;//vector auxiliar
-			for(int i=0;i<height*width;i++){
-				if(i%width==0 && i!= 0)//al inicio del recorrido de la segunda fila, se hace push_back a dicha fila
-					data.push_back(aux);
-
-
-				if((int)(i/width)==0){
-					aux.push_back(image[i]);//primera fila, se hace push_back a cada dato por columna
-				}else{
-					aux[i%width]=image[i];//siguientes filas solo se reemplaza el valor en i%width
-				}
-			}
-			data.push_back(aux);//incluye la ultima fila no añadida en el bucle
+			return "width:"+to_string(img.width)+
+				"\nheight:"+to_string(img.height)+
+				"\nchannels:"+to_string(img.channels)+"\n";
 		}
 };
