@@ -13,16 +13,17 @@ using namespace std;
 #define endl "\n"
 #define PI 3.1415926535897932384626
 
-int RANGE=50;//	+/- RANGE
+int RANGE=55;//	+/- RANGE
 vector<int> color_group_dfs;
 vector<int> color_group_bfs;
 int pos_dfs[100000000]={0};//largo
 int pos_bfs[100000000]={0};//largo
 
+
 //Prototipos
 bool dentro_rango(int, int);
 bool fuera_rango(int, int);
-void dfs(Image, int, int);
+void dfs(Image, int, int, unsigned char*);
 void bfs(Image, int, int);
 void make_bfs(Image,int);
 void make_dfs(Image, int);
@@ -39,35 +40,55 @@ bool fuera_rango(int base, int color){
 
 
 void make_dfs(Image img){
+
+	unsigned char output[img.height*img.width];
+
 	for(int i=0;i<img.height*img.width;i++){
 		int color=(int)img.image[i];
 		if(pos_dfs[i]==0){
 			color_group_dfs.push_back(color);//coloca al color principal
-			dfs(img, i, color);//hace dfs
+			dfs(img, i, color, output);//hace dfs
 		}
 	}
+
+	//img.image=output;
 }
-void dfs(Image img,int pos, int color){
+void dfs(Image img,int pos, int color, unsigned char *output){
+	stack<int>path;
+
 	int width=img.width;
 	int height=img.height;
 
-	if(fuera_rango(color, (int)img.image[pos]))//fuera de rango del color actual
-		return;
+	path.push(pos);
 
-	if(pos_dfs[pos]==1) return;
-	//se agrega
-	pos_dfs[pos]=1;
-	//cout<<(int)img[pos]<<" ";
-	//img[pos]=(unsigned char)color;//no es necesario para la primera pasada
+	while(!path.empty()){
+		if(pos_dfs[pos]!=1){
+			//pintar
+			pos_dfs[pos]=1;
+			//img.image[pos]=(unsigned char)(color_count%256);
+			img.image[pos]=(unsigned char)(color);
+		}
 
-	if(pos-width>=0)//arriba
-		dfs(img,pos-width,color);
-	if(pos+width<width*height)//abajo
-		dfs(img,pos+width,color);
-	if((pos+1)%width!=0)//derecha
-		dfs(img,pos+1,color);
-	if(pos%width!=0)//izquierda
-		dfs(img,pos-1,color);
+		int new_pos=pos;
+		if(pos-width>=0 && !fuera_rango(color, (int)img.image[pos-width]) && pos_dfs[pos-width]!=1){//arriba
+			new_pos=pos-width;
+		}else if(pos+width<width*height && !fuera_rango(color, (int)img.image[pos+width]) && pos_dfs[pos+width]!=1){//abajo
+			new_pos=pos+width;
+		}else if((pos+1)%width!=0 && !fuera_rango(color, (int)img.image[pos+1]) && pos_dfs[pos+1]!=1){//derecha
+			new_pos=pos+1;
+		}else if(pos%width!=0 && !fuera_rango(color, (int)img.image[pos-1]) && pos_dfs[pos-1]!=1){//izquierda
+			new_pos=pos-1;
+		}
+
+		if(new_pos!=pos){
+			path.push(new_pos);
+			pos=new_pos;
+		}else{
+			path.pop();
+			if(!path.empty())
+				pos=path.top();
+		}
+	}
 }
 
 
@@ -85,7 +106,7 @@ void make_bfs(Image img){
 void bfs(Image img, int pos, int color){
 	int width=img.width;
 	int height=img.height;
-	
+
 	bool son[4]={
 		pos-width>=0 && pos_bfs[pos-width]==0 				&& dentro_rango(color, (int)img.image[pos-width]), //arriba
 		pos+width<width*height && pos_bfs[pos+width]==0	&& dentro_rango(color, (int)img.image[pos+width]),//abajo
