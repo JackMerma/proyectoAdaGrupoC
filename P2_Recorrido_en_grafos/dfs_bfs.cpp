@@ -14,8 +14,8 @@ using namespace std;
 #define PI 3.1415926535897932384626
 
 int RANGE;//rango de busqueda por dfs o bfs
-int pos_dfs[(int)1e8]={0};//arreglo de almacenamiento para DFS
-int pos_bfs[(int)1e8]={0};//arreglo de almacenamiento para BFS
+int pos_dfs[(int)1e8];//arreglo de almacenamiento para DFS
+int pos_bfs[(int)1e8];//arreglo de almacenamiento para BFS
 
 
 //Prototipos
@@ -44,6 +44,7 @@ void make_dfs(Image img, int range){
 	 *  	range -> rango para hacer el recorrido [0-255]
 	 */
 
+	for(int i=0;i<(int)1e8;i++) pos_dfs[i]=0;
 	RANGE=range;
 
 	//algoritmo
@@ -114,6 +115,7 @@ void make_bfs(Image img, int range){
 	 *  	range -> rango para hacer el recorrido [0-255]
 	 */
 
+	for(int i=0;i<(int)1e8;i++) pos_bfs[i]=0;
 	RANGE=range;
 
 	for(int i=0;i<img.height*img.width;i++){//se recorre todos los datos
