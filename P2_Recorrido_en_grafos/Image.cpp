@@ -23,7 +23,7 @@ class Image{
 		int channels;
 		unsigned char *image=NULL; //en forma lineal y en escala RGB
 
-		void read(char *path){
+		void read(const char *path){
 			/**
 			 * Metodo read: Lee una imagen RGB
 			 * Atributos:
@@ -41,17 +41,17 @@ class Image{
 			convert_to_gray();
 		}
 
-		void write(char* type, char* name){
+		void write(const char* path,const char* type){
 			/**
 			 * Metodo write: Escribe sobre un archivo nuevo
 			 * Atributos:
+			 * 	*path -> path del archivo a crear, incluye el nombre del archivo
 			 * 	*type -> tipo de extension de la imagen
-			 * 	*name -> nombre de la imagen
 			 */
 
 			//transformando todo el nombre del nuevo archivo
 			char complete_name[100];
-			strcpy(complete_name,name);
+			strcpy(complete_name,path);
 			strcat(complete_name,".");
 			strcat(complete_name,type);
 
@@ -63,7 +63,7 @@ class Image{
 				stbi_write_jpg(complete_name,width,height,channels,image,100);
 			}else{
 				//por defecto
-				write("jpg",name);
+				write(path,type);
 			}
 		}
 
